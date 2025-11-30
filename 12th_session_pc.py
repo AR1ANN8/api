@@ -1,0 +1,42 @@
+import pyodbc
+from tkinter import *
+window = Tk()
+window.geometry("400x400")
+window.title("Arian Nb")
+name = StringVar()
+last = StringVar()
+age = IntVar()
+grade = StringVar()
+def add_to_database():
+    name_ = name.get()
+    last_ = last.get()
+    age_ = age.get()
+    grade_ = grade.get()
+    print(name_, last_, age_, grade_)
+    conn = pyodbc.connect('Driver={ODBC Driver 17 for SQL Server};'
+                          'SERVER=localhost;'
+                          'DATABASE=mydb;'
+                          'Trusted_Connection=yes;')
+    cursor = conn.cursor()
+    query = """INSERT INTO my_table (name, last, age, grade) VALUES(?, ?, ?, ?)
+    """
+    cursor.execute(query, (name_, last_, age_, grade_))
+    cursor.commit()
+btn = Button(window, text="Click me!", command=add_to_database)
+window_label1 = Label(window, text="Name")
+window_value1 = Entry(window, textvariable=name)
+window_label1.grid(row=0, column=0)
+window_value1.grid(row=0, column=1)
+window_label2 = Label(window, text="Last name")
+window_value2 = Entry(window, textvariable=last)
+window_label2.grid(row=1, column=0)
+window_value2.grid(row=1, column=1)
+window_label3 = Label(window, text = "Age")
+window_value3 = Entry(window, textvariable=age)
+window_label3.grid(row=2, column=0)
+window_value3.grid(row=2, column=1)
+window_label4 = Label(window, text="Grade")
+window_value4 = Entry(window, textvariable=grade)
+window_label4.grid(row=3, column=0)
+window_value4.grid(row=3, column=1)
+window.mainloop()
